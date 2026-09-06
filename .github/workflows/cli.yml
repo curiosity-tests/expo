@@ -63,13 +63,13 @@ on:
     - cron: 0 14 * * *
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}-${{ inputs.leg || 'push' }}-${{ inputs.racecar_run }}
+  group: ${{ github.workflow }}-${{ 'push' }}-${{ github.ref }}-${{ inputs.leg || 'push' }}-${{ inputs.racecar_run }}
   cancel-in-progress: false
 
 env:
   # The one variable that separates the arms: on baseline, action-checkout
   # skips its Set up Chalk step entirely.
-  CHALK_ON: ${{ github.event_name == 'workflow_dispatch' && inputs.leg != 'baseline' }}
+  CHALK_ON: ${{ inputs.leg == 'instrumented' }}
   # JS-only jobs, so skip the ~685 MB @shopify/react-native-skia prebuilt-binary download.
   SKIP_SKIA_DOWNLOAD: '1'
 
@@ -81,7 +81,7 @@ run-name: "CLI ${{ inputs.leg || 'push' }} ${{ inputs.racecar_run }}"
 
 jobs:
   jest-ubuntu:
-    if: github.event_name != 'schedule' || github.repository == 'curiosity-tests/expo'
+    if: ${{ 'push' != 'schedule' || github.repository == 'curiosity-tests/expo' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -104,7 +104,7 @@ jobs:
 
       - name: ⬇️ Fetch commits from base branch
         run: git fetch origin ${{ github.event.before || github.base_ref || 'main' }}:${{ github.event.before || github.base_ref || 'main' }} --depth 100
-        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        if: ${{ 'push' == 'pull_request' || 'push' == 'workflow_dispatch' }}
 
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
@@ -137,7 +137,7 @@ jobs:
         run: pnpm test:e2e --max-workers 1 --shard ${{ matrix.shard }}/${{ strategy.job-total }}
 
   playwright-ubuntu:
-    if: github.event_name != 'schedule' || github.repository == 'curiosity-tests/expo'
+    if: ${{ 'push' != 'schedule' || github.repository == 'curiosity-tests/expo' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -160,7 +160,7 @@ jobs:
 
       - name: ⬇️ Fetch commits from base branch
         run: git fetch origin ${{ github.event.before || github.base_ref || 'main' }}:${{ github.event.before || github.base_ref || 'main' }} --depth 100
-        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        if: ${{ 'push' == 'pull_request' || 'push' == 'workflow_dispatch' }}
 
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
