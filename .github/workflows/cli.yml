@@ -81,7 +81,7 @@ run-name: "CLI ${{ inputs.leg || 'push' }} ${{ inputs.racecar_run }}"
 
 jobs:
   jest-ubuntu:
-    if: ${{ 'push' != 'schedule' || github.repository == 'curiosity-tests/expo' }}
+    if: ${{ 'push' != 'schedule' || github.repository == 'expo/expo' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -137,7 +137,7 @@ jobs:
         run: pnpm test:e2e --max-workers 1 --shard ${{ matrix.shard }}/${{ strategy.job-total }}
 
   playwright-ubuntu:
-    if: ${{ 'push' != 'schedule' || github.repository == 'curiosity-tests/expo' }}
+    if: ${{ 'push' != 'schedule' || github.repository == 'expo/expo' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
