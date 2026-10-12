@@ -2,8 +2,6 @@ name: Test React Native nightly build for Expo Modules
 
 on:
   workflow_dispatch: {}
-  schedule:
-  - cron: '0 3 * * *'   # 03:00 AM UTC everyday
   push:
     branches: [main]
     paths:

@@ -8,9 +8,6 @@ name: expo-bot help
 on:
   issue_comment:
     types: [created]
-  schedule:
-    # Once a day. Offset from :00 so we are not in the hourly stampede.
-    - cron: '17 8 * * *'
   workflow_dispatch:
 
 permissions:

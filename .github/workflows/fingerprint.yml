@@ -15,8 +15,6 @@ on:
     - packages/@expo/fingerprint/**
     - packages/create-expo/**
     - pnpm-lock.yaml
-  schedule:
-  - cron: 0 14 * * *
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

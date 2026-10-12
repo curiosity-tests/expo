@@ -59,8 +59,6 @@ on:
     - packages/expo-router/**
     - packages/expo-server/**
     - '!**.md'
-  schedule:
-  - cron: 0 14 * * *
 
 concurrency:
   group: ${{ github.workflow }}-${{ 'push' }}-${{ github.ref }}-${{ inputs.leg || 'push' }}-${{ inputs.racecar_run }}

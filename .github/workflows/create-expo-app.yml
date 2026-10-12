@@ -1,6 +1,7 @@
 name: Create Expo App
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, 'sdk-*']
     paths:
@@ -12,8 +13,6 @@ on:
       - .github/workflows/create-expo-app.yml
       - packages/create-expo/**
       - pnpm-lock.yaml
-  schedule:
-    - cron: 0 14 * * *
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
